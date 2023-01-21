@@ -4,7 +4,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 export const {
   reducer: CUSTOM_REDUCER,
-  actions: { CLOSE_STACK, LOADING_OVERLAY, OPEN_STACK, SIDEBAR_ACTION, SIDEBAR_TOGGLE },
+  actions: { closeStack, loadingOverlay, openStack, sidebarAction, sidebarToggle },
 } = createSlice({
   name: 'CustomReducer',
   initialState: {
@@ -17,23 +17,23 @@ export const {
     Dialog: JSX.Element[]
   },
   reducers: {
-    SIDEBAR_TOGGLE: (state) => {
+    sidebarToggle: (state) => {
       state.Sidebar = !state.Sidebar
     },
 
-    SIDEBAR_ACTION: (state, action: PayloadAction<boolean>) => {
+    sidebarAction: (state, action: PayloadAction<boolean>) => {
       state.Sidebar = action.payload
     },
 
-    LOADING_OVERLAY: (state, action: PayloadAction<boolean>) => {
+    loadingOverlay: (state, action: PayloadAction<boolean>) => {
       state.LoadingOverlay = action.payload
     },
 
-    OPEN_STACK: (state, action: PayloadAction<JSX.Element>) => {
+    openStack: (state, action: PayloadAction<JSX.Element>) => {
       state.Dialog = [...state.Dialog, action.payload]
     },
 
-    CLOSE_STACK: (state) => {
+    closeStack: (state) => {
       state.Dialog.pop()
     },
   },
@@ -41,7 +41,7 @@ export const {
 
 export const {
   reducer: THEME_REDUCER,
-  actions: { DARK_MODE_TOGGLE },
+  actions: { palleteModeToggle: palleteModeToggle },
 } = createSlice({
   name: 'ThemeReducer',
   initialState: {
@@ -50,15 +50,15 @@ export const {
     DarkMode: 'light' | 'dark'
   },
   reducers: {
-    DARK_MODE_TOGGLE: (state) => {
+    palleteModeToggle: (state) => {
       state.DarkMode = state.DarkMode === 'dark' ? 'light' : 'dark'
       localStorage.setItem('Theme', state.DarkMode)
     },
-    TO_DARK: (state) => {
+    toDark: (state) => {
       state.DarkMode = 'dark'
       localStorage.setItem('Theme', state.DarkMode)
     },
-    TO_LIGHT: (state) => {
+    toLight: (state) => {
       state.DarkMode = 'light'
       localStorage.setItem('Theme', state.DarkMode)
     },
@@ -82,3 +82,13 @@ export type AppDispatch = typeof STORE.dispatch
 
 export const useAppDispatch: () => AppDispatch = useDispatch
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+
+export const Reducers = () => {
+  return {
+    burgerToggle: useAppSelector((state) => state.Custom.Sidebar),
+    dialogIsOpen: useAppSelector((state) => state.Custom.Dialog),
+    isLoadingOverlay: useAppSelector((state) => state.Custom.LoadingOverlay),
+    palleteMode: useAppSelector((state) => state.Theme.DarkMode),
+    dispatch: useAppDispatch(),
+  }
+}

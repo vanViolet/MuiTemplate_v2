@@ -1,15 +1,19 @@
 import { RouteObject, useRoutes } from 'react-router-dom'
 import { Box } from '@mui/material'
 import { MinimalLayout } from 'Layouts/MinimalLayout'
-import { createElement } from 'react'
-import loadable from '@loadable/component'
 import MainLayout from 'Layouts/MainLayout'
+import { createElement } from 'react'
+import { ManajemenAkunPage } from 'Views/ManajemenAkun'
+import loadable from '@loadable/component'
 
 const { MainRoutes, AuthRoutes }: { MainRoutes: () => RouteObject; AuthRoutes: () => RouteObject } = {
   MainRoutes: () => ({
     path: '/',
-    element: createElement(loadable(() => Promise.resolve(MainLayout))),
-    children: [{ path: '/', element: <Box>asdfads</Box> }],
+    element: MainLayout(),
+    children: [
+      { path: '/dashboard', element: <Box>asdfads</Box> },
+      { path: '/manajemen-akun', element: createElement(loadable(() => Promise.resolve(ManajemenAkunPage))) },
+    ],
   }),
   AuthRoutes: () => ({
     path: '/',
